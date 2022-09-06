@@ -73,7 +73,7 @@ namespace veque
     class veque
     {
     public:
-        
+
         // Types
         using allocator_type = Allocator;
         using alloc_traits = std::allocator_traits<allocator_type>;
@@ -398,7 +398,7 @@ namespace veque
                 auto allocated_before_begin = std::max( capacity_front(), front ) - size();
                 auto allocated_after_begin = std::max( capacity_back(), back );
                 auto new_full_capacity = allocated_before_begin + allocated_after_begin;
-                
+
                 if ( new_full_capacity > max_size() )
                 {
                     throw std::length_error("veque<T,ResizeTraits,Alloc>::reserve(" + std::to_string(front) + ", " + std::to_string(back) + ") exceeds max_size()");
@@ -599,7 +599,7 @@ namespace veque
             return res;
         }
 
-        // Resizes the veque, by adding or removing from the front. 
+        // Resizes the veque, by adding or removing from the front.
         void resize_front( size_type count )
         {
             _resize_front( count );
@@ -678,10 +678,10 @@ namespace veque
         static_assert( std::ratio_greater_equal_v<_unused_realloc,std::ratio<0>>, "Reserving negative space is not well-defined" );
 
         // Confirmation that allocator_traits will only directly call placement new(ptr)T()
-        static constexpr auto _calls_default_constructor_directly = 
+        static constexpr auto _calls_default_constructor_directly =
             std::is_same_v<allocator_type,std::allocator<T>>;
         // Confirmation that allocator_traits will only directly call placement new(ptr)T(const T&)
-        static constexpr auto _calls_copy_constructor_directly = 
+        static constexpr auto _calls_copy_constructor_directly =
             std::is_same_v<allocator_type,std::allocator<T>>;
         // Confirmation that allocator_traits will only directly call ~T()
         static constexpr auto _calls_destructor_directly =
@@ -909,7 +909,7 @@ namespace veque
                 }
             }
         }
-        
+
         template< typename It >
         void _assign( It b, It e )
         {
@@ -1031,7 +1031,7 @@ namespace veque
             if ( storage_needed <= current_capacity )
             {
                 // Shift elements toward front
-                auto distance = _offset - new_offset;
+                /* auto */ difference_type distance = _offset - new_offset;
                 _shift_front( begin(), end(), distance  );
                 _move_begin(-distance);
                 _move_end(-distance);
@@ -1041,7 +1041,7 @@ namespace veque
                 _reallocate( storage_needed, new_offset );
             }
         }
-        
+
         // ...and yet-unused space at front of this storage
         void _reallocate_space_at_front( size_type count )
         {
@@ -1061,7 +1061,7 @@ namespace veque
                 _reallocate( storage_needed, new_offset );
             }
         }
-        
+
         // Move veque to new storage, with specified capacity
         void _reallocate( size_type allocated, size_type offset )
         {
@@ -1181,7 +1181,7 @@ namespace veque
         // Returns iterator to beginning of destructed gap
         void _shift_back( const_iterator b, const_iterator e, size_type count )
         {
-            auto start = _mutable_iterator(b); 
+            auto start = _mutable_iterator(b);
             if ( b == end() )
             {
                 return;
@@ -1229,7 +1229,7 @@ namespace veque
             if ( size() == 0 )
             {
                 // Existing veque is empty.  Construct at the ideal location
-                _copy_construct_range( b, e, ideal_begin );        
+                _copy_construct_range( b, e, ideal_begin );
             }
             else if ( size_delta == 0 )
             {
